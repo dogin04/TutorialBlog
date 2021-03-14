@@ -16,6 +16,7 @@ class Content(db.Model):
     good_count = db.Column(db.Integer, default=0)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     user = db.relationship('User', backref=db.backref('content', lazy=True))
+    good = False
 
     def __repr__(self):
         return '<Content %r>' % self.title
@@ -28,4 +29,12 @@ class User(db.Model, UserMixin):
 
     def __repr__(self):
         return '<User %r>' % self.name
+
+
+class ContentGoodUser(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    content_id = db.Column(db.Integer, db.ForeignKey('content.id'))
+    content = db.relationship('Content', backref=db.backref('content_good_user', lazy=True))
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    user = db.relationship('User', backref=db.backref('content_good_user', lazy=True))
 
